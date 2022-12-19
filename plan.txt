@@ -1,0 +1,36 @@
+To-Do Project
+	To-Dos
+		Project-Name
+			if no-name, don't add to name
+			if name, convert to lowercase and check if project name exists in project list
+			if project exists, add to that list
+		Name of To-Do
+			just name that to-do
+			required field
+		To-Do Text
+			not required
+			text-field
+		Date
+			set date to auto to today unless changed
+		Enter
+		Cancel
+		
+		
+		add button
+			click button
+				open form
+					submit form
+					project name(required),project text-field(not required),date(not required),
+						create todo object
+							push object to list
+							
+	
+	form
+		popup
+		container
+			project name
+			text-field
+			date
+			submit
+			cancel
+		
