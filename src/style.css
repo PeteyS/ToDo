@@ -1,43 +1,190 @@
+body,html{
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+}
 .control{
   width: 100px;
   height: 25px;
 }
-.show{
-  height: 500px;
-  width: 500px;
-  background-color: wheat;
+.projectShow{
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 520px;
+  background-color: rgb(230, 182, 124);
 }
-.projectShow{
-  height: 500px;
-  width: 500px;
-  background-color: azure;
-}
-.todoContainer,.projectContainer{
+.todoContainer{
   display: flex;
-  height: 60px;
   width: 400px;
-  background-color: black;
-  color: white;
+  background-color: white;
+  color: black;
   margin: 10px;
+}
+.projectContainer{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 5px;
+  padding: 5px;
+  width: 90%;
+  font-size:8px;
+  background-color: antiquewhite;
+  border-radius: 5px;
+  color: black;
 }
 .todoName,.todoMessage,.todoDate,.todoDelete,.todoIdentify,.todoEdit,.projectDelete,.projectEdit{
   margin: 4px;
 }
-
 .todoDelete,.projectDelete{
-  background-color: red;
+  background-color: transparent;
   border-radius: 100%;
   height: 30px;
   width: 30px;
+  margin-left: auto;
 }
 .todoEdit,.projectEdit{
-  background-color: green;
+  background-color: transparent;
   border-radius: 100%;
+  height: 29px;
+  width: 29px;
+}
+#projectForm,#todoForm,#form,#blackout{
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 9;
+}
+.formContainer{
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 5px;
+}
+#container{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0.5;
+  min-height: 100px;
+  background-color: rgb(240, 213, 179);
+}
+#main{
+flex: 6;
+display: flex;
+}
+#sideBar{
+width: 0px;
+z-index: 1;
+overflow-x: hidden;
+transition: 0.5s;
+min-width:250px;
+flex: 1 1 0%;
+background-color: rgb(230, 182, 124);
+border-radius: 5px;
+}
+.content{
+  flex: 6; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: scroll;
+  background-color: antiquewhite;
+}
+.add{
+  height: 50px;
+  width: 500px;
+  background-color: beige;
+}
+.show{
+  min-height: 600px;
+  margin-top: 20px;
+  height: 85%;
+  width: 700px;
+  background-color: wheat;
+  display: flex;
+  flex-direction: column;
+}
+footer{
+flex: 0.5;
+}
+#blackout{
+  height: 100%;
+  width: 100%;
+  position: absoulte;
+  display: none;
+  background-color: black;
+  opacity: 0.5;
+}
+#titleNoteBook{
+  height: 50px;
+  width: 50px;
+}
+#mainTitle{
+  display: flex;
+  transition: 0.5s;
+  margin-left: 250px;
+}
+#menuButtonIcon{
+  height: 50px;
+  width: 50px;
+  border-radius: 30%;
+  cursor: pointer;
+  background-color: lightblue;
+}
+#menuButtonIcon:hover{
+  transform: scale(1.1);
+}
+#menuButtonIcon:active{
+  transform: scale(0.99);
+}
+#menuButton{
+  position: absolute;
+  top: 10px;
+  left: 110px;
+}
+.sideBarItems{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  cursor: pointer;
+}
+.sideBarItems:active{
+  transform:scale(0.99);
+}
+#projectIcon,#todayIcon,#inboxIcon{
   height: 30px;
   width: 30px;
 }
-#projectForm,#todoForm{
-  display: none;
+.deleteIcon,.editIcon{
+  background-color: transparent;
+  height: 30px;
+  width: 30px;
+}
+.deleteIcon{
+  height: 27px;
+  width: 27px;
+}
+.formatItems{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 90%;
+  height: 55%;
+}
+.sideBarIcon{
+  margin-left: 4px;
 }

@@ -4,12 +4,56 @@
         <meta charset="utf-8">
         <title>ToDo</title>
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <script defer="defer" src="/src/index.js"></script>
+        <script defer="defer" src="main.js"></script>
         <link rel="stylesheet" href="/src/style.css">
     </head>
     <body>
+        <!--<button id="today" class="control">today</button>
+        <button id="inbox" class="control">inbox</button>
+        <button id="project" class="control">projects</button>
+        <div class="show"></div>
+        <div class="projectShow"></div>-->
+        <div id="container">
+            <header>
+                <div id="menuButton">
+                    <img src="/src/menu.png" id="menuButtonIcon">
+                </div>
+                <div id="mainTitle">
+                    <img src="/src/notebook.png" id="titleNoteBook">
+                    <h1>DoIt</h1>
+                </div>
+            </header>
+            <div id="main">
+                <div id="sideBar">
+                    <div id="inbox" class="sideBarItems">
+                        <div class="formatItems">
+                            <img src="/src/inbox.png" alt="" srcset="" id="inboxIcon" class="sideBarIcon">
+                            Inbox
+                        </div>
+                    </div>
+                    <div id="today"class="sideBarItems">
+                        <div class="formatItems">
+                            <img src="/src/today.png" alt="" id="todayIcon" class="sideBarIcon">
+                            Today    
+                        </div>
+                    </div>
+                    <div id="project" class="sideBarItems">
+                        <div class="formatItems">
+                            <img src="/src/project.png" alt="" id="projectIcon" class="sideBarIcon">
+                            Projects
+                        </div>
+                    </div>
+                    <div class="projectShow"></div>
+                </div>
+                <div class="content">
+                    <div class="add">Add task</div>
+                    <div class="show"></div>
+                </div>
+            </div>
+            <footer></footer>
+        </div>
         <div id="blackout"></div>
-        <form action="" id="form">
+        <form action="" id="form" class="formContainer">
             <label for="projectName">Project Name</label>
             <input type="text" name="projectName" id="projectName">
             <label for="projectMessage">Message</label>
@@ -17,21 +61,15 @@
             <label for="projectDate">Date</label>
             <input type="date" name="projectDate" id="projectDate">
             <input type="submit" value="Submit" id="submit">
+            <input type="button" value="Cancel" id="formCancel">
         </form>
-        <button id="today" class="control">today</button>
-        <button id="inbox" class="control">inbox</button>
-        <button id="project" class="control">projects</button>
-        <div style="display: flex;">
-            <div class="show"></div>
-            <div class="projectShow"></div>
-        </div>
-        <form id="projectForm">
+        <form id="projectForm" class="formContainer">
             <label for="changeName"></label>
             <input type="text" name="proChangeName" id="projectChangeName">
             <input type="submit" value="Submit" id="projectSubmit">
             <input type="button" value="Cancel" id="projectCancel" class="cancel">
         </form>
-        <form id="todoForm">
+        <form id="todoForm" class="formContainer">
             <label for="todoChangeName"></label>
             <input type="text" name="todoChangeName" id="todoChangeName">
             <label for="todoChangeText"></label>

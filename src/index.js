@@ -1,3 +1,9 @@
+import removeIcon from './remove.png';
+import editIcon from './edit.png'; 
+import './style.css';
+
+
+
 let today = new Date();
 let dd = String(today.getDate()).padStart(2,'0');
 let mm = String(today.getMonth()+1).padStart(2,"0");
@@ -27,9 +33,69 @@ const todoCancel =document.querySelector('#todoCancel');
 const todoChangeName = document.querySelector("#todoChangeName");
 const todoChangeText = document.querySelector('#todoChangeText');
 const todoChangeDate = document.querySelector("#todoChangeDate");
-let old;
+let objRefresh = {name:"",message:"",date:"",identifier:""};
+let name2;
 let swtch1=0;
 let swtch2=0;
+const add = document.querySelector('.add');
+const blackout = document.querySelector('#blackout');
+const fromCancel = document.querySelector('#formCancel');
+const menuButton = document.querySelector('#menuButton');
+const sideBar = document.querySelector('#sideBar');
+const mainTitle = document.querySelector('#mainTitle');
+const menuButtonIcon = document.querySelector('#menuButtonIcon');
+let currentChoice = ''; //this will be used to default that todo project name or date, depending on tab clicked
+const sideBarIcons = document.querySelectorAll('.sideBarIcon');
+const sideBarItems = document.querySelectorAll('.sideBarItems');
+
+sideBarItems.forEach(element => {
+    element.addEventListener('mouseover',(event)=>{
+        element.getElementsByTagName('img')[0].style.background = 'lightblue';
+        element.getElementsByTagName('img')[0].style.borderRadius = '20%';
+        element.getElementsByTagName('div')[0].style.background = 'antiquewhite';
+        element.getElementsByTagName('div')[0].style.borderRadius = '15px';
+    })
+    element.addEventListener('mouseout',()=>{
+        element.getElementsByTagName('img')[0].style.background = 'rgb(230, 182, 124)';
+        element.getElementsByTagName('img')[0].style.borderRadius = '0%';
+        element.getElementsByTagName('div')[0].style.background = 'rgb(230, 182, 124)';
+    })
+});
+
+
+menuButton.addEventListener('click',()=>{
+    console.log(sideBar.style.flex);
+    if(sideBar.style.flex == '1 1 0%' || sideBar.style.flex == ""){
+        sideBar.style.flex = '0 1 0%';
+        sideBar.style.minWidth = '0px';
+        mainTitle.style.marginLeft = '0px';
+        menuButtonIcon.style.background = 'rgb(241, 224, 202)';
+        console.log(sideBar.style.flex);
+    }
+    else{
+        sideBar.style.minWidth = '250px';
+        sideBar.style.flex = '1 1 0%';
+        mainTitle.style.marginLeft = '250px';
+        menuButtonIcon.style.background = 'lightblue';
+    }
+})
+
+function showForm(){
+form.style.display = 'block';
+blackout.style.display = 'block';
+}
+
+function hideForm(){
+    clearForm();
+    form.style.display = 'none';
+    blackout.style.display = 'none';
+}
+
+function clearForm(){
+    projectName.value = "";
+    projectMessage.value = "";
+    projectDate.value = "";
+}
 
 function todo(name,message,date){
     if (message == null){
@@ -38,12 +104,13 @@ function todo(name,message,date){
     if (date == null || date == ""){
         date = 'n/a';
     }
-    todo.name = name;
-    todo.message = message;
-    todo.date = date;
-    todo.identifier = identifier;
+    identifier : identifier;
     identifier++;
-    return {name,message,date,identifier};
+    return {
+        name:name,
+        message:message,
+        date:date,
+        identifier};
 }
 
 function redrawTodo(list){
@@ -92,30 +159,6 @@ function deleteWholeProject(objName,todoList,proList,proSet){
     return todoList,proList,proSet;
 }
 
-function changeProjectNameAll(projectList,projectSet,todoList,newName,oldName){
-
-    if(newName == oldName){
-        return projectList,projectSet,todoList;
-    }
-    if(projectSet.has(newName)){
-        projectSet.delete(oldName);
-    }
-    else{
-        projectSet.add(newName);
-        projectSet.delete(oldName);
-    }
-    for(let i=0;i<projectList.length;i++){
-        if(projectList[i] == oldName){
-            projectList[i] = newName;
-        }
-    }
-    for(let i=0;i<todoList.length;i++){
-        if(todoList[i].name == oldName){
-            todoList[i].name = newName;
-        }
-    }
-    return projectList,projectSet,todoList,newName;
-}
 
 function setList(list){ 
     let set = new Set(list);
@@ -123,8 +166,22 @@ function setList(list){
     return newArr;
 }
 
+function addProject(name,projectList,projectSet){
+    if(!name == ""){
+        if(projectList.length == 0){
+            projectList.push(name);
+        }
+        else{
+            projectList.unshift(name);
+            projectList = setList(projectList);
+        }
+        projectSet.add(name);
+    }
+}
+
 
 function todoDiv(obj){
+
     const todoContainer = document.createElement('div');
     const todoMessage = document.createElement('div');
     const todoDelete = document.createElement('div');
@@ -132,97 +189,115 @@ function todoDiv(obj){
     const todoName = document.createElement('div');
     const todoIdentify = document.createElement('div');
     const todoEdit = document.createElement('div');
-
+    const rIcon = new Image();
+    const eIcon = new Image();
+    rIcon.src = removeIcon;
+    eIcon.src = editIcon;
+    rIcon.classList.add('deleteIcon');
+    eIcon.classList.add('editIcon');
 
     todoContainer.classList.add('todoContainer');
     todoMessage.classList.add('todoMessage');
     todoDelete.classList.add('todoDelete');
+    todoDelete.appendChild(rIcon);
     todoDate.classList.add('todoDate');
     todoName.classList.add("todoName");
     todoIdentify.classList.add('todoIdentify');
     todoEdit.classList.add('todoEdit');
+    todoEdit.appendChild(eIcon);
     todoName.textContent = obj.name;
     todoIdentify.textContent = obj.identifier;
     todoMessage.textContent = obj.message;
     todoDate.textContent = obj.date;
-    todoContainer.append(todoName,todoMessage,todoDate,todoIdentify,todoDelete,todoEdit);
+    todoContainer.append(todoName,todoMessage,todoDate,todoDelete,todoEdit);
     todoDelete.addEventListener('click',()=>{
         todoList = deleteTodo(obj,todoList);
         redrawTodo(todoList);
     })
     todoEdit.addEventListener('click',()=>{
-        todoForm.style.display = 'block';
+
+        objRefresh.name = obj.name;
+        objRefresh.date = obj.date;
+        objRefresh.message = obj.message;
+        objRefresh.identifier = obj.identifier;
+
         todoChangeName.value = obj.name;
-        old = obj.name;
         todoChangeText.value = obj.message;
         todoChangeDate.value = obj.date;
-        console.log(obj.identifier);
+
+        todoForm.style.display = 'block';
+
     });
     todoForm.onsubmit = function(){
-        /*for(let i=0;i<todoList.length;i++){
-            if(obj.identifier == todoList[i].identifier){
-                todoList[i].name = todoChangeName.value;
-                todoList[i].message = todoChangeText.value;
-                todoList[i].date = todoChangeDate.value;
-                if(obj.name != old){
-                    if(projectSet.has(obj.name) == false){
-                        for(let i=0;i<todoList.length;i++){
-                            if(todoList[i].name == old){
-                                swtch1 = 1;
-                                break;
-                            }
-                        }
-                        if(swtch1 == 1){
-                            projectSet.add(obj.name);
-                            if(projectList.length>0){
-                                projectList.unshift(obj.name);
-                            }
-                            else{
-                                projectList.push(obj.name);
-                            }  
-                        }
-                        else{
-                            deleteProject(old,projectList,projectSet);
-                            projectSet.add(obj.name);
-                            if(projectList.length>0){
-                                projectList.unshift(obj.name);
-                            }
-                            else{
-                                projectList.push(obj.name);
-                            }  
-                        }
-                    }
-                    else if(projectSet.has(obj.name)){
-                        for(let i=0;i<todoList.length;i++){
-                            if(todoList[i].name == old){
-                                swtch2 = 1;
-                                break;
-                            }
-                        }
-                        if(swtch2 == 1){
-                            deleteProject(old,projectList,projectSet);
-                        }
-                    }
-                }
+        objRefresh.message = todoChangeText.value;
+        objRefresh.date = todoChangeDate.value;
+        objRefresh.name = todoChangeName.value;
+        for(let i=0;i<todoList.length;i++){
+            if(todoList[i].identifier == objRefresh.identifier){
+                todoList[i].name = objRefresh.name;
+                todoList[i].message = objRefresh.message;
+                todoList[i].date = objRefresh.date;
             }
         }
-        
-        redrawTodo(todoList);
+        if(!projectSet.has(objRefresh.name)){
+            if(objRefresh.name != ""){
+                projectSet.add(objRefresh.name);
+                projectList.unshift(objRefresh.name);
+            }
+        }
         redrawProject(projectList);
-
+        redrawTodo(todoList);
         todoForm.style.display = 'none';
         return false;
-    */}
+    }
     todoSubmit.addEventListener('click',()=>{
+        todoForm.style.display = 'none';
         return false;
     });
     todoCancel.addEventListener('click',()=>{
-        todoForm.style.display = 'block';
+        todoForm.style.display = 'none';
     });
     return todoContainer;
 }
 
+function projectNameEdit(projectList,projectSet,todoList,newName,oldName){
+    if(newName == oldName){
+        return projectList,projectSet,todoList,newName;
+    }
+    else if(projectSet.has(newName)){
+        for(let i=0;i<todoList.length;i++){
+            if(todoList[i].name == oldName){
+                todoList[i].name = newName;
+            }
+        }
+        deleteProject(oldName,projectList,projectSet);
+        return projectList,projectSet,todoList,newName;
+    }
+    else if(projectSet.has(newName) == false){
+        if(newName != ""){
+            addProject(newName,projectList,projectSet)
+            for(let i=0;i<todoList.length;i++){
+                if(todoList[i].name == oldName){
+                    todoList[i].name = newName;
+                }
+            }
+        }
+        deleteProject(oldName,projectList,projectSet);
+        return projectList,projectSet,todoList,newName;
+    }
+    else{
+        return projectList,projectSet,todoList,newName;
+    }
+}
+
 function projectDiv(name){ //should probably add list and set as parameters for reusability
+    const rIcon = new Image();
+    const eIcon = new Image();
+    rIcon.src = removeIcon;
+    eIcon.src = editIcon;
+    rIcon.classList.add('deleteIcon');
+    eIcon.classList.add('editIcon');
+
     const projectContainer = document.createElement('div');
     const projectTitle = document.createElement('h1');
     const projectDelete = document.createElement('div');
@@ -230,7 +305,9 @@ function projectDiv(name){ //should probably add list and set as parameters for 
     projectContainer.classList.add('projectContainer');
     projectTitle.classList.add('projectTitle');
     projectDelete.classList.add('projectDelete');
+    projectDelete.append(rIcon);
     projectEdit.classList.add('projectEdit');
+    projectEdit.appendChild(eIcon);
     projectTitle.textContent = name;
     projectContainer.append(projectTitle,projectDelete,projectEdit);
     projectContainer.addEventListener('click',()=>{
@@ -244,21 +321,38 @@ function projectDiv(name){ //should probably add list and set as parameters for 
     projectEdit.addEventListener('click',()=>{
         projectForm.style.display = 'block';
         proChangeName.value = name;
+        name2 = name;
     });
     projectForm.onsubmit = function(){
+        if(name2 != proChangeName.value){
+            if(projectSet.has(proChangeName.value)){
+                for(let i=0;i<todoList.length;i++){
+                    if(todoList[i].name == name2){
+                        todoList[i].name = proChangeName.value;
+                    }
+                }
+                projectList,projectSet = deleteProject(name2,projectList,projectSet);
+            }
+            else{
+                projectList.unshift(proChangeName.value);
+                for(let i=0;i<todoList.length;i++){
+                    if(todoList[i].name == name2){
+                        todoList[i].name = proChangeName.value;
+                    }
+                }
+                projectList,projectSet = deleteProject(name2,projectList,projectSet);
+            }
+        }
+        redrawProject(projectList);
+        redrawTodo(todoList);
+        projectForm.style.display = 'none';
         return false;
     }
     proSubmit.addEventListener('click',()=>{
-        projectList,projectSet,todoList,name = changeProjectNameAll(projectList,projectSet,todoList,proChangeName.value,name);
-        projectList = setList(projectList);
-        redrawProject(projectList);
-        redrawTodo(todoList)
-        proChangeName.value = name;
-        projectForm.style.display = 'none';
         return false;
     });
     projectCancel.addEventListener("click", ()=>{
-        projectForm.style.dispaly = 'none';
+        projectForm.style.display = 'none';
     });
     return projectContainer;
 }
@@ -291,9 +385,7 @@ form.onsubmit = function(){
     else{
         show.append(todoDiv(object));
     }
-    projectName.value = "";
-    projectMessage.value = "";
-    projectDate.value = "";
+    hideForm();
     return false;
 }
 
@@ -314,6 +406,21 @@ todayButton.addEventListener('click', ()=>{
     } 
 });
 
-projectButton.addEventListener('click', ()=>{
+add.addEventListener('click',()=>{
+    showForm();
+});
 
+fromCancel.addEventListener('click',()=>{
+    hideForm();
+});
+
+blackout.addEventListener('click',()=>{
+    hideForm();
+});
+
+projectButton.addEventListener('click', ()=>{
+    show.innerHTML = "";
+    for(let i=0;i<projectList.length;i++){
+        show.append(projectDiv(projectList[i]));
+    }
 })
