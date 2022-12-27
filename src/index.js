@@ -47,6 +47,7 @@ const menuButtonIcon = document.querySelector('#menuButtonIcon');
 let currentChoice = ''; //this will be used to default that todo project name or date, depending on tab clicked
 const sideBarIcons = document.querySelectorAll('.sideBarIcon');
 const sideBarItems = document.querySelectorAll('.sideBarItems');
+let contentTitle = document.querySelector('#contentTitle');
 
 sideBarItems.forEach(element => {
     element.addEventListener('mouseover',(event)=>{
@@ -81,14 +82,34 @@ menuButton.addEventListener('click',()=>{
 })
 
 function showForm(){
-form.style.display = 'block';
+form.style.display = 'flex';
 blackout.style.display = 'block';
 }
 
+function showTodo(){
+    todoForm.style.display = 'block';
+    blackout.style.display = 'block';
+}
+function showProject(){
+    projectForm.style.display = 'block';
+    blackout.style.display = 'block';
+}
+function hideProject(){
+    projectForm.style.display = 'none';
+    blackout.style.display = 'none';
+
+}
+
+function hideTodo(){
+    todoForm.style.display = 'none';
+    blackout.style.display = 'none';
+}
 function hideForm(){
     clearForm();
     form.style.display = 'none';
     blackout.style.display = 'none';
+    projectForm.style.display = 'none';
+    todoForm.style.display = 'none';
 }
 
 function clearForm(){
@@ -113,11 +134,24 @@ function todo(name,message,date){
         identifier};
 }
 
-function redrawTodo(list){
+function redrawTodo(list,currentChoice){
     show.innerHTML = "";
-    for(let i=0;i<list.length;i++){
-        show.append(todoDiv(list[i]));
-    } 
+    console.log(currentChoice);
+    console.log(list);
+    if(currentChoice!=undefined){
+        for(let i=0;i<list.length;i++){
+            if(list[i].name == currentChoice){
+                console.log(list[i].name);
+                show.append(todoDiv(list[i])); 
+            }
+        }  
+    }
+    else{
+        console.log('here');
+        for(let i=0;i<list.length;i++){
+            show.append(todoDiv(list[i]));
+        } 
+    }
 }
 
 function redrawProject(proList){
@@ -210,6 +244,7 @@ function todoDiv(obj){
     todoMessage.textContent = obj.message;
     todoDate.textContent = obj.date;
     todoContainer.append(todoName,todoMessage,todoDate,todoDelete,todoEdit);
+    
     todoDelete.addEventListener('click',()=>{
         todoList = deleteTodo(obj,todoList);
         redrawTodo(todoList);
@@ -225,7 +260,7 @@ function todoDiv(obj){
         todoChangeText.value = obj.message;
         todoChangeDate.value = obj.date;
 
-        todoForm.style.display = 'block';
+        showTodo();
 
     });
     todoForm.onsubmit = function(){
@@ -252,42 +287,14 @@ function todoDiv(obj){
     }
     todoSubmit.addEventListener('click',()=>{
         todoForm.style.display = 'none';
+        blackout.style.display = 'none';
         return false;
     });
     todoCancel.addEventListener('click',()=>{
         todoForm.style.display = 'none';
+        blackout.style.display = 'none';
     });
     return todoContainer;
-}
-
-function projectNameEdit(projectList,projectSet,todoList,newName,oldName){
-    if(newName == oldName){
-        return projectList,projectSet,todoList,newName;
-    }
-    else if(projectSet.has(newName)){
-        for(let i=0;i<todoList.length;i++){
-            if(todoList[i].name == oldName){
-                todoList[i].name = newName;
-            }
-        }
-        deleteProject(oldName,projectList,projectSet);
-        return projectList,projectSet,todoList,newName;
-    }
-    else if(projectSet.has(newName) == false){
-        if(newName != ""){
-            addProject(newName,projectList,projectSet)
-            for(let i=0;i<todoList.length;i++){
-                if(todoList[i].name == oldName){
-                    todoList[i].name = newName;
-                }
-            }
-        }
-        deleteProject(oldName,projectList,projectSet);
-        return projectList,projectSet,todoList,newName;
-    }
-    else{
-        return projectList,projectSet,todoList,newName;
-    }
 }
 
 function projectDiv(name){ //should probably add list and set as parameters for reusability
@@ -311,7 +318,9 @@ function projectDiv(name){ //should probably add list and set as parameters for 
     projectTitle.textContent = name;
     projectContainer.append(projectTitle,projectDelete,projectEdit);
     projectContainer.addEventListener('click',()=>{
-        redrawTodo(todoList);
+        currentChoice = name;
+        contentTitle.textContent = name;
+        redrawTodo(todoList,currentChoice);
     });
     projectDelete.addEventListener('click',()=>{
         todoList,projectList,projectSet = deleteWholeProject(name,todoList,projectList,projectSet);
@@ -320,6 +329,7 @@ function projectDiv(name){ //should probably add list and set as parameters for 
     });
     projectEdit.addEventListener('click',()=>{
         projectForm.style.display = 'block';
+        blackout.style.display = 'block';
         proChangeName.value = name;
         name2 = name;
     });
@@ -346,6 +356,7 @@ function projectDiv(name){ //should probably add list and set as parameters for 
         redrawProject(projectList);
         redrawTodo(todoList);
         projectForm.style.display = 'none';
+        blackout.style.display = 'none';
         return false;
     }
     proSubmit.addEventListener('click',()=>{
@@ -353,6 +364,7 @@ function projectDiv(name){ //should probably add list and set as parameters for 
     });
     projectCancel.addEventListener("click", ()=>{
         projectForm.style.display = 'none';
+        blackout.style.display = 'none';
     });
     return projectContainer;
 }
@@ -361,13 +373,8 @@ form.onsubmit = function(){
     const object = todo(projectName.value, projectMessage.value, projectDate.value);
     todoList.unshift(object);
     if(!object.name == ""){
-        if(projectList.length == 0){
-            projectList.push(object.name);
-        }
-        else{
-            projectList.unshift(object.name);
-            projectList = setList(projectList);
-        }
+        projectList.unshift(object.name);
+        projectList = setList(projectList);
         if(projectSet.has(object.name) == false){
             if(projectShow.firstChild){
                 projectShow.insertBefore(projectDiv(object.name),projectShow.firstChild);
@@ -395,10 +402,12 @@ submit.addEventListener('click',()=>{
 
 inboxButton.addEventListener('click', ()=>{
     redrawTodo(todoList);
+    contentTitle.textContent = 'Inbox';
 });
 
 todayButton.addEventListener('click', ()=>{
     show.innerHTML = "";
+    contentTitle.textContent = 'Today';
     for(let i=0;i<todoList.length;i++){
         if(todoList[i].date == today){
             show.append(todoDiv(todoList[i]));
@@ -419,6 +428,8 @@ blackout.addEventListener('click',()=>{
 });
 
 projectButton.addEventListener('click', ()=>{
+    currentChoice = 'project';
+    contentTitle.textContent = 'Project';
     show.innerHTML = "";
     for(let i=0;i<projectList.length;i++){
         show.append(projectDiv(projectList[i]));

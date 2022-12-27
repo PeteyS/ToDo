@@ -8,6 +8,15 @@ body,html{
   width: 100px;
   height: 25px;
 }
+#contentTitle{
+  height: 50px;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  font-size: 40px;
+}
 .projectShow{
   display: flex;
   flex-direction: column;
@@ -18,22 +27,35 @@ body,html{
 }
 .todoContainer{
   display: flex;
-  width: 400px;
-  background-color: white;
+  width: 90%;
+  border: 1px solid rgb(240, 213, 179);
+  background-color: antiquewhite;
   color: black;
-  margin: 10px;
+  margin: 5px;
+  justify-content: center;
+  align-items: center;
+  overflow: scroll;
+  border-radius: 5px;
+}
+.todoContainer:hover{
+  background-color: rgb(240, 213, 179);
 }
 .projectContainer{
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  overflow: scroll;
   margin: 5px;
   padding: 5px;
   width: 90%;
   font-size:8px;
   background-color: antiquewhite;
+  border: 1px solid rgb(240, 213, 179);
   border-radius: 5px;
   color: black;
+}
+.projectContainer:hover{
+  background-color: lightblue;
 }
 .todoName,.todoMessage,.todoDate,.todoDelete,.todoIdentify,.todoEdit,.projectDelete,.projectEdit{
   margin: 4px;
@@ -58,6 +80,24 @@ body,html{
   left: 50%;
   transform: translate(-50%,-50%);
   z-index: 9;
+}
+#form{
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+border-radius: 5px;
+}
+.buttons{
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+.formFormat{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 .formContainer{
   max-width: 300px;
@@ -105,16 +145,32 @@ border-radius: 5px;
 .add{
   height: 50px;
   width: 500px;
-  background-color: beige;
+  background-color: antiquewhite;
+  border:1px solid rgb(240, 213, 179);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.add:hover{
+  background-color: rgb(240, 213, 179);
+  transform: scale(1.1);
+}
+.add:active{
+  transform: scale(0.9);
 }
 .show{
   min-height: 600px;
   margin-top: 20px;
   height: 85%;
   width: 700px;
-  background-color: wheat;
+  background-color: transparent;
   display: flex;
   flex-direction: column;
+  border-radius: 5px;
+  display: flex;
+  justify-content:flex-start;
+  align-items:center;
 }
 footer{
 flex: 0.5;

@@ -46,28 +46,38 @@
                     <div class="projectShow"></div>
                 </div>
                 <div class="content">
-                    <div class="add">Add task</div>
+                    <div id="contentTitle">Inbox</div>
+                    <div class="add">Add ToDo</div>
                     <div class="show"></div>
                 </div>
             </div>
-            <footer></footer>
         </div>
         <div id="blackout"></div>
         <form action="" id="form" class="formContainer">
-            <label for="projectName">Project Name</label>
-            <input type="text" name="projectName" id="projectName">
-            <label for="projectMessage">Message</label>
-            <textarea name="projectMessage" id="projectMessage" cols="30" rows="10" required></textarea>
-            <label for="projectDate">Date</label>
-            <input type="date" name="projectDate" id="projectDate">
-            <input type="submit" value="Submit" id="submit">
-            <input type="button" value="Cancel" id="formCancel">
+            <div class="formFormat">
+                <label for="projectName">Project Name</label>
+                <input type="text" name="projectName" id="projectName">
+            </div>
+            <div class="formFormat">
+                <label for="projectMessage">Message</label>
+                <textarea name="projectMessage" id="projectMessage" cols="30" rows="10" required></textarea>
+            </div>
+            <div class="formFormat">
+                <label for="projectDate">Date</label>
+                <input type="date" name="projectDate" id="projectDate">
+            </div>
+            <div class="buttons">
+                <input type="submit" value="Submit" id="submit">
+                <input type="button" value="Cancel" id="formCancel">
+            </div>
         </form>
         <form id="projectForm" class="formContainer">
             <label for="changeName"></label>
             <input type="text" name="proChangeName" id="projectChangeName">
-            <input type="submit" value="Submit" id="projectSubmit">
-            <input type="button" value="Cancel" id="projectCancel" class="cancel">
+            <div class="buttons">
+                <input type="submit" value="Submit" id="projectSubmit">
+                <input type="button" value="Cancel" id="projectCancel" class="cancel">
+            </div>
         </form>
         <form id="todoForm" class="formContainer">
             <label for="todoChangeName"></label>
